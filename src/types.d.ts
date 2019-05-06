@@ -4,11 +4,11 @@ declare global {
 
   type typeMiddlewareFunc = (
     tweet: Twitter.Twitter.Status,
-    res: Function,
-    next?: Function
+    reject: typeReject,
+    resolve: typeCallback
   ) => void;
 
-  type typeResponse = (error: Error, msg?: String) => void;
-
   type typeCallback = () => void;
+
+  type typeReject = (err: Error) => void;
 }

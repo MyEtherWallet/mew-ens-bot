@@ -11,6 +11,11 @@ export default {
   Rules: {
     min_followers: 200,
     min_account_age: 60 * 60 * 24 * 365.25, //1 year
-    reply_to: ["myetherwallet, mewensbot", "ensdomains"]
+    reply_to: [
+      "myetherwallet, mewensbot",
+      "ensdomains",
+      "katyperry",
+      "KatyActivity"
+    ]
   }
 };

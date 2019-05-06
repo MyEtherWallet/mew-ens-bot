@@ -3,22 +3,18 @@ class Middleware {
   constructor() {
     this.middlewares = [];
   }
-  use(fn: typeMiddlewareFunc) {
+  use(fn: typeMiddlewareFunc): void {
     this.middlewares.push(fn);
   }
-  executeMiddleware(
-    tweet: TwitStatus,
-    res: (res: typeResponse) => void,
-    done: () => void
-  ): void {
+  executeMiddleware(tweet: TwitStatus, reject: typeReject, resolve: any): void {
     this.middlewares.reduceRight(
-      (done, next) => () => next(tweet, res, done),
-      done
-    )(tweet, res);
+      (resolve, next) => () => next(tweet, reject, resolve),
+      resolve
+    )(tweet, reject);
   }
-  run(tweet: TwitStatus, res: (res: typeResponse) => void): Promise<String> {
-    return new Promise(resolve => {
-      this.executeMiddleware(tweet, res, resolve);
+  run(tweet: TwitStatus): Promise<String> {
+    return new Promise((resolve, reject) => {
+      this.executeMiddleware(tweet, reject, resolve);
     });
   }
 }
