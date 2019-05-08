@@ -1,7 +1,15 @@
 import Twitter from "./Twitter";
 import configs from "./configs";
 import middleware from "./middleware";
-import { valid_age, valid_followers, valid_reply, not_retweet } from "./rules";
+import {
+  valid_age,
+  valid_followers,
+  valid_reply,
+  not_retweet,
+  max_names,
+  not_processed,
+  valid_tweet
+} from "./rules";
 
 const stream = Twitter.stream("statuses/filter", {
   track: configs.Rules.reply_to
@@ -12,10 +20,13 @@ stream.on("tweet", tweet => {
   processTweet.use(valid_followers);
   processTweet.use(valid_age);
   processTweet.use(not_retweet);
+  processTweet.use(not_processed);
+  processTweet.use(max_names);
+  processTweet.use(valid_tweet);
   processTweet
     .run(tweet)
     .then(() => {
-      console.log(tweet.text, "Processed");
+      console.log(tweet);
     })
     .catch(e => {
       console.error(e.message);
