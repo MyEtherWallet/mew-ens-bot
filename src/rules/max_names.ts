@@ -8,7 +8,7 @@ export default async (
 ) => {
   const count = await db.getCount(tweet.user.id);
   if (count < configs.Rules.max_names_per_account) {
-    resolve();
+    return resolve();
   }
   reject(new Error(messages.ERRORS.too_many_registrations));
 };

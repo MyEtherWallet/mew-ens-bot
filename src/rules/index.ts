@@ -4,7 +4,7 @@ import valid_followers from "./valid_followers";
 import valid_reply from "./valid_reply";
 import max_names from "./max_names";
 import not_processed from "./not_processed";
-import valid_tweet from "./valid_tweet";
+import name_available from "./name_available";
 
 export {
   not_retweet,
@@ -13,5 +13,5 @@ export {
   valid_reply,
   max_names,
   not_processed,
-  valid_tweet
+  name_available
 };

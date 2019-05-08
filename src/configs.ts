@@ -13,13 +13,24 @@ export default {
     min_account_age: 0, // 60 * 60 * 24 * 365.25, // 1 year
     reply_to: ["mewensbot"],
     max_names_per_account: 5,
-    valid_subdomains: ["etherbase.eth", "wantsome.eth"]
+    valid_subdomains: ["etherbase.eth", "wantsome.eth", "gimmethe.eth"]
   },
   DB: {
     path: "ens-bot.json"
   },
   Registrar: {
-    address: "0xc32659651d137a18b79925449722855aa327231d"
+    address: "0xc32659651d137a18b79925449722855aa327231d",
+    resolver: "0x1da022710df5002339274aadee8d58218e9d6ab5",
+    referrer: "0xDECAF9CD2367cdbb726E904cD6397eDFcAe6068D"
   },
-  Node: "https://api.myetherwallet.com/eth"
+  Node: {
+    host: "https://api.myetherwallet.com/eth",
+    chainID: 1
+  },
+  Wallet: {
+    PRIV_KEY: process.env.WALLET_PRIV_KEY || "",
+    ADDRESS: process.env.WALLET_ADDRESS || "",
+    GAS_PRICE: "0x012a05f200",
+    GAS_LIMIT: "0x030d40"
+  }
 };
