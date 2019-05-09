@@ -3,6 +3,7 @@ import configs from "./configs";
 import middleware from "./middleware";
 import { parseTweet } from "./helpers";
 import subdomainRegistrar from "./subdomainRegistrar";
+import db from "./db";
 const ethTx = require("ethereumjs-tx");
 import {
   valid_age,
@@ -13,15 +14,14 @@ import {
   not_processed,
   name_available
 } from "./rules";
-import { config } from "dotenv";
 
 const stream = Twitter.stream("statuses/filter", {
   track: configs.Rules.reply_to
 });
-function postTweet(tweet: string, reply_id: string | undefined) {
+function postTweet(tweet: string, replyId: string | undefined) {
   const objtweet = {
     status: tweet,
-    in_reply_to_status_id: reply_id ? reply_id : null
+    in_reply_to_status_id: replyId ? replyId : null
   };
   Twitter.post("statuses/update", objtweet, (err, data) => {
     if (err) console.error(err);
@@ -67,19 +67,27 @@ stream.on("tweet", tweet => {
       tx.sign(new Buffer(configs.Wallet.PRIV_KEY.replace("0x", ""), "hex"));
       subdomainRegistrar.web3.eth
         .sendSignedTransaction(`0x${tx.serialize().toString("hex")}`)
-        .on("transactionHash", (hash: string) => {
+        .on("transactionHash", async (hash: string) => {
           console.log(hash);
           postTweet(
             `Hey @${tweet.user.screen_name}! ${
               parsed.fullName
             } successfully registered for ${
               parsed.owner
-            } https://etherscan.io/tx/${hash}`,
+            } https://etherscan.io/tx/${hash} powered by @myetherwallet`,
             tweet.id_str
           );
+          await db.increaseCount(tweet.user.id);
+          await db.setProcessed(tweet.id, true);
         });
     })
     .catch(e => {
+      postTweet(
+        `oopsie daisy, @${tweet.user.screen_name} Something went wrong :( (${
+          e.message
+        })`,
+        tweet.id_str
+      );
       console.error(e.message);
     });
 });
