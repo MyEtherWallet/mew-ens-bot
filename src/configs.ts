@@ -11,7 +11,7 @@ export default {
   Rules: {
     min_followers: 0,
     min_account_age: 0, // 60 * 60 * 24 * 365.25, // 1 year
-    reply_to: ["mewensbot"],
+    reply_to: ["ensnowbot"],
     max_names_per_account: 5,
     valid_subdomains: ["etherbase.eth", "wantsome.eth", "gimmethe.eth"]
   },

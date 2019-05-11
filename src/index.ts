@@ -29,6 +29,9 @@ function postTweet(tweet: string, replyId: string | undefined) {
   });
 }
 stream.on("tweet", tweet => {
+  if (configs.Rules.reply_to.includes(tweet.user.screen_name)) {
+    return;
+  }
   const processTweet = new middleware();
   processTweet.use(valid_reply);
   processTweet.use(valid_followers);
@@ -74,20 +77,21 @@ stream.on("tweet", tweet => {
               parsed.fullName
             } successfully registered for ${
               parsed.owner
-            } https://etherscan.io/tx/${hash} powered by @myetherwallet`,
+            } https://etherscan.io/tx/${hash} Powered by @myetherwallet`,
             tweet.id_str
           );
           await db.increaseCount(tweet.user.id);
           await db.setProcessed(tweet.id, true);
         });
     })
-    .catch(e => {
+    .catch(async e => {
       postTweet(
         `oopsie daisy, @${tweet.user.screen_name} Something went wrong :( (${
           e.message
         })`,
         tweet.id_str
       );
+      await db.setProcessed(tweet.id, true);
       console.error(e.message);
     });
 });
