@@ -1,1 +1,1 @@
-web: npm run live
+worker: npm run live
