@@ -4,6 +4,7 @@
   "description": "Twitter bot for registering ENSNow names",
   "main": "src/index.ts",
   "scripts": {
+    "live": "node dist/index.js",
     "start": "nodemon",
     "build": "npm run lint && tsc",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
@@ -44,5 +45,8 @@
     "lowdb": "^1.0.0",
     "twit": "^2.2.11",
     "web3": "^1.0.0-beta.37"
+  },
+  "engines": {
+    "node": "8.x"
   }
 }
