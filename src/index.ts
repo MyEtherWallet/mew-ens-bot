@@ -15,6 +15,18 @@ import {
   name_available
 } from "./rules";
 
+(async () => {
+  try {
+    const nonce = await subdomainRegistrar.web3.eth.getTransactionCount(
+      configs.Wallet.ADDRESS,
+      "pending"
+    );
+    await db.setNonce(nonce);
+  } catch (e) {
+    console.log(e);
+  }
+})();
+
 const stream = Twitter.stream("statuses/filter", {
   track: configs.Rules.reply_to
 });
@@ -30,7 +42,7 @@ function postTweet(tweet: string, replyId: string | undefined) {
 }
 stream.on("tweet", tweet => {
   if (
-    configs.Rules.reply_to.includes(tweet.user.screen_name) &&
+    configs.Rules.reply_to.includes(tweet.user.screen_name) ||
     tweet.in_reply_to_status_id !== null
   ) {
     return;
@@ -48,13 +60,7 @@ stream.on("tweet", tweet => {
     .then(async () => {
       const parsed = parseTweet(tweet.text);
       console.log(parsed);
-      let nonce = await db.getNonce();
-      if (!nonce) {
-        nonce = await subdomainRegistrar.web3.eth.getTransactionCount(
-          configs.Wallet.ADDRESS
-        );
-        await db.setNonce(nonce);
-      }
+      const nonce = await db.getNonce();
       const data = subdomainRegistrar.methods
         .register(
           parsed.labelHash,
