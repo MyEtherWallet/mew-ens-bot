@@ -4,6 +4,7 @@
   "description": "Twitter bot for registering ENSNow names",
   "main": "src/index.ts",
   "scripts": {
+    "dev": "nodemon",
     "live": "node dist/index.js",
     "build": "npm run lint && tsc",
     "lint": "tslint 'src/**/*.{ts,tsx}'",

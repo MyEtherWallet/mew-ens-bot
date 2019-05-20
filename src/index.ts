@@ -29,7 +29,10 @@ function postTweet(tweet: string, replyId: string | undefined) {
   });
 }
 stream.on("tweet", tweet => {
-  if (configs.Rules.reply_to.includes(tweet.user.screen_name)) {
+  if (
+    configs.Rules.reply_to.includes(tweet.user.screen_name) &&
+    tweet.in_reply_to_status_id !== null
+  ) {
     return;
   }
   const processTweet = new middleware();
