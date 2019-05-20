@@ -9,10 +9,10 @@ export default {
     access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET || ""
   },
   Rules: {
-    min_followers: 0,
-    min_account_age: 0, // 60 * 60 * 24 * 365.25, // 1 year
+    min_followers: 50,
+    min_account_age: 60 * 60 * 24 * 182.625, // 6 months
     reply_to: ["mewensbot"],
-    max_names_per_account: 5,
+    max_names_per_account: 3,
     valid_subdomains: ["etherbase.eth", "wantsome.eth", "gimmethe.eth"]
   },
   DB: {

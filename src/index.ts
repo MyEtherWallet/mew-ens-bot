@@ -45,9 +45,13 @@ stream.on("tweet", tweet => {
     .then(async () => {
       const parsed = parseTweet(tweet.text);
       console.log(parsed);
-      const nonce = await subdomainRegistrar.web3.eth.getTransactionCount(
-        configs.Wallet.ADDRESS
-      );
+      let nonce = await db.getNonce();
+      if (!nonce) {
+        nonce = await subdomainRegistrar.web3.eth.getTransactionCount(
+          configs.Wallet.ADDRESS
+        );
+        await db.setNonce(nonce);
+      }
       const data = subdomainRegistrar.methods
         .register(
           parsed.labelHash,
@@ -71,6 +75,7 @@ stream.on("tweet", tweet => {
       subdomainRegistrar.web3.eth
         .sendSignedTransaction(`0x${tx.serialize().toString("hex")}`)
         .on("transactionHash", async (hash: string) => {
+          await db.increaseNonce();
           console.log(hash);
           postTweet(
             `Hey @${tweet.user.screen_name}! ${
