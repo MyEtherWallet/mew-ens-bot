@@ -91,7 +91,7 @@ stream.on("tweet", tweet => {
               parsed.fullName
             } successfully registered for ${
               parsed.owner
-            } https://etherscan.io/tx/${hash} Powered by @myetherwallet`,
+            } https://etherscan.io/tx/${hash} \nPowered by @myetherwallet`,
             tweet.id_str
           );
           await db.increaseCount(tweet.user.id);
@@ -100,9 +100,7 @@ stream.on("tweet", tweet => {
     })
     .catch(async e => {
       postTweet(
-        `oopsie daisy, @${tweet.user.screen_name} Something went wrong :( (${
-          e.message
-        })`,
+        `@${tweet.user.screen_name} Something went wrong :( (${e.message})`,
         tweet.id_str
       );
       await db.setProcessed(tweet.id, true);
