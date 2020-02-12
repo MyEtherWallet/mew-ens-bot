@@ -19,8 +19,8 @@ export default {
     path: "ens-bot.json"
   },
   Registrar: {
-    address: "0xc32659651d137a18b79925449722855aa327231d",
-    resolver: "0x1da022710df5002339274aadee8d58218e9d6ab5",
+    address: "0xe65d8AAF34CB91087D1598e0A15B582F57F217d9",
+    resolver: "0xDaaF96c344f63131acadD0Ea35170E7892d3dfBA",
     referrer: "0xDECAF9CD2367cdbb726E904cD6397eDFcAe6068D"
   },
   Node: {
